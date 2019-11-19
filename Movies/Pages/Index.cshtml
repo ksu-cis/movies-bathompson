@@ -4,4 +4,63 @@
     ViewData["Title"] = "Home page";
 }
 
-<h1>Hello World</h1>
+<h1>Movies</h1>
+<form method="post">
+    <input type="text" name="@Model.search" />
+    <label>
+        <input type="checkbox" Value="G" name="@Model.mpaa.Contains("G")" />
+        Rated G
+    </label>
+    <label>
+        <input type="checkbox" Value="PG" name="@Model.mpaa.Contains("PG")" />
+        Rated PG
+    </label>
+    <label>
+        <input type="checkbox" Value="PG-13" name="@Model.mpaa.Contains("PG-13")" />
+        Rated PG-13
+    </label>
+    <label>
+        <input type="checkbox" Value="R" name="@Model.mpaa.Contains("R")"/>
+        Rated R
+    </label>
+    <label>
+        <input type="checkbox" Value="NC-17" name="@Model.mpaa.Contains("NC-17")" />
+        Rated NC-17
+    </label>
+    <label>
+        Minimum IMDB Rating:
+        <input type="number" min="0" max="10" step="0.1" name="@Model.minIMDB" />
+    </label>
+    <input type="submit" value="Search" />
+</form>
+@foreach(Movie m in Model.movies)
+{
+<div class="movie-entry">
+    <h2>@m.Title</h2>
+    @if (m.Major_Genre != null)
+    {<div class="genre">@m.Major_Genre</div>}
+    @if (m.Director != null)
+    {<div class="director">Directed by @m.Director</div>}
+    @if (m.Release_Year != null)
+    {<div class="year">@m.Release_Year</div>}
+    @if (m.MPAA_Rating != null)
+    {<div class="rating">Rated @m.MPAA_Rating</div>}
+    <div class="movie-ratings">
+        @if (m.IMDB_Rating != null)
+        {
+            <div>
+
+                IMDB
+                <h3> @m.IMDB_Rating</h3>
+            </div>
+        }
+        @if (m.Rotten_Tomatoes_Rating != null)
+        {
+            <div>
+                Rotten Tomatoes
+                <h3>@m.Rotten_Tomatoes_Rating</h3>
+            </div>
+        }
+    </div>
+</div>
+}
