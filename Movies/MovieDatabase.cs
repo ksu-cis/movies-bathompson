@@ -10,25 +10,31 @@ namespace Movies
     /// <summary>
     /// A class representing a database of movies
     /// </summary>
-    public class MovieDatabase
+    public static class MovieDatabase
     {
-        private List<Movie> movies = new List<Movie>();
-
+        private static List<Movie> movies;
+        public static List<Movie> All
+        {
+            get
+            {
+                if (movies == null)
+                {
+                    using (StreamReader file = System.IO.File.OpenText("movies.json"))
+                    {
+                        string json = file.ReadToEnd();
+                        movies = JsonConvert.DeserializeObject<List<Movie>>(json);
+                    }
+                }
+                return movies;
+            }
+        }
         /// <summary>
         /// Loads the movie database from the JSON file
         /// </summary>
-        public MovieDatabase() {
-            
-            using (StreamReader file = System.IO.File.OpenText("movies.json"))
-            {
-                string json = file.ReadToEnd();
-                movies = JsonConvert.DeserializeObject<List<Movie>>(json);
-            }
-        }
-        public List<Movie> Search(string search)
+        public static List<Movie> Search(List<Movie> l, string search)
         {
             List<Movie> results = new List<Movie>();
-            foreach(Movie m in movies)
+            foreach(Movie m in l)
             {
                 if (m.Title.Contains(search, StringComparison.OrdinalIgnoreCase) || m.Director!=null && m.Director.Contains(search, StringComparison.OrdinalIgnoreCase))
                 {
@@ -38,17 +44,17 @@ namespace Movies
             return results;
         }
 
-       public List<Movie> FilterByMPAA(List<string> mpaa)
+       public static List<Movie> FilterByMPAA(List<Movie> m, List<string> mpaa)
         {
             List<Movie> r = new List<Movie>();
-            foreach(Movie m in movies)
+            foreach(Movie l in m)
             {
-                if (mpaa.Contains(m.MPAA_Rating))
-                    r.Add(m);
+                if (mpaa.Contains(l.MPAA_Rating))
+                    r.Add(l);
             }
             return r;
         }
-        public List<Movie> FilterByMPAAAndSearch(List<string> mpaa, string search)
+        public static List<Movie> FilterByMPAAAndSearch(List<string> mpaa, string search)
         {
             List<Movie> r = new List<Movie>();
             foreach (Movie m in movies)
@@ -61,7 +67,7 @@ namespace Movies
             return r;
         }
 
-        public List<Movie> FilterIMDB(float min, List<Movie> m)
+        public static List<Movie> FilterByMinIMDB(List<Movie> m, float min)
         {
             List<Movie> r = new List<Movie>();
 
@@ -73,6 +79,6 @@ namespace Movies
             }
             return r;
         }
-        public List<Movie> All { get { return movies; } }
+        
     }
 }

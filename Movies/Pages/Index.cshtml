@@ -33,7 +33,7 @@
     </label>
     <input type="submit" value="Search" />
 </form>
-@foreach(Movie m in Model.movies)
+@foreach(Movie m in MovieDatabase.All)
 {
 <div class="movie-entry">
     <h2>@m.Title</h2>
