@@ -5,37 +5,37 @@
 }
 
 <h1>Movies</h1>
-<form method="post">
-    <input type="text" name="@Model.search" />
+<form method="post" id="search-and-filter-by-form">
+    <input type="text" name="@Model.search" id="search"/>
     <label>
         <input type="checkbox" Value="G" name="@Model.mpaa.Contains("G")" />
         Rated G
     </label>
     <label>
-        <input type="checkbox" Value="PG" name="@Model.mpaa.Contains("PG")" />
+        <input type="checkbox" Value="PG" class="mpaa" name="@Model.mpaa.Contains("PG")" />
         Rated PG
     </label>
     <label>
-        <input type="checkbox" Value="PG-13" name="@Model.mpaa.Contains("PG-13")" />
+        <input type="checkbox" Value="PG-13" class="mpaa" name="@Model.mpaa.Contains("PG-13")" />
         Rated PG-13
     </label>
     <label>
-        <input type="checkbox" Value="R" name="@Model.mpaa.Contains("R")"/>
+        <input type="checkbox" Value="R" class="mpaa" name="@Model.mpaa.Contains("R")"/>
         Rated R
     </label>
     <label>
-        <input type="checkbox" Value="NC-17" name="@Model.mpaa.Contains("NC-17")" />
+        <input type="checkbox" Value="NC-17" class ="mpaa" name="@Model.mpaa.Contains("NC-17")" />
         Rated NC-17
     </label>
     <label>
         Minimum IMDB Rating:
-        <input type="number" min="0" max="10" step="0.1" name="@Model.minIMDB" />
+        <input type="number" min="0" max="10" step="0.1" id="minIMDB" name="@Model.minIMDB" />
     </label>
     <input type="submit" value="Search" />
 </form>
 @foreach(Movie m in MovieDatabase.All)
 {
-<div class="movie-entry">
+<div class="movie-entry" data-title="@m.Title" data-mpaa="@m.MPAA_Rating" data-imdb="@m.IMDB_Rating">
     <h2>@m.Title</h2>
     @if (m.Major_Genre != null)
     {<div class="genre">@m.Major_Genre</div>}
